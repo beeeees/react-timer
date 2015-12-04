@@ -7,10 +7,12 @@ var Timer = React.createClass({
       newProjectName: "Task 1",
       buttonText: "Start",
       on: false,
+      startTimeDisplay: "",
       startTime: "",
       stopTime: "",
       emptyTimer: "00:00:00",
-      timeSpent: ""
+      timeSpent: "",
+      taskNumber: 1
     };
   },
 
@@ -34,15 +36,41 @@ var Timer = React.createClass({
   },
 
   startTimer: function startTimer() {
-
+    var self = this;
+    self.resetTimer();
+    var startTimeHMS = "00:00:00";
     var currentdate = new Date();
+    var minutes = currentdate.getMinutes();
+    var hours = currentdate.getHours();
+    if (hours > 12) {
+      var hours = hours - 12;
+    }
+    if (minutes < 10) {
+      var minutes = "0" + minutes;
+    }
+    var startTimeDisplayed = hours + ":" + minutes + " PM";
+
     var startTimeHMS = currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
 
+    this.setState({ startTimeDisplay: startTimeDisplayed });
     this.setState({ startTime: startTimeHMS });
+
+    $("tbody").append("<tr><td className='col-sm-4'><p>" + self.state.newProjectName + "</p></td><td className='col-sm-4'></td><td className='col-sm-2'><p>" + startTimeDisplayed + "</p></td><td className='col-sm-2'><p></p></td></tr>");
   },
 
   stopTimer: function stopTimer() {
+    var self = this;
     var currentdate = new Date();
+    var minutes = currentdate.getMinutes();
+    var hours = currentdate.getHours();
+    if (hours > 12) {
+      var hours = hours - 12;
+    }
+    if (minutes < 10) {
+      var minutes = "0" + minutes;
+    }
+    var stopTimeDisplayed = hours + ":" + minutes + " PM";
+
     var stopTimeHMS = currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds();
 
     var startTimeRecorded = this.state.startTime;
@@ -74,6 +102,8 @@ var Timer = React.createClass({
     this.setState({ stopTime: stopTimeHMS });
     this.setState({ emptyTimer: timeDifference });
     this.setState({ timeSpent: timeDifference });
+
+    $("tbody tr").last().html("<td className='col-sm-4'><p>" + self.state.newProjectName + "</p></td><td className='col-sm-4'>" + timeDifference + "</td><td className='col-sm-2'><p>" + self.state.startTimeDisplay + "</p></td><td className='col-sm-2'><p>" + stopTimeDisplayed + "</p></td>");
   },
 
   inputChanged: function inputChanged(event) {
@@ -126,8 +156,7 @@ var Timer = React.createClass({
         React.createElement(
           "div",
           { className: "buttons col-sm-4" },
-          startButton,
-          resetButton
+          startButton
         )
       ),
       React.createElement(
@@ -180,47 +209,7 @@ var Timer = React.createClass({
               )
             )
           ),
-          React.createElement(
-            "tbody",
-            null,
-            React.createElement(
-              "tr",
-              null,
-              React.createElement(
-                "td",
-                { className: "col-sm-4" },
-                React.createElement(
-                  "p",
-                  null,
-                  this.state.newProjectName
-                )
-              ),
-              React.createElement(
-                "td",
-                { className: "col-sm-4" },
-                this.state.timeSpent
-              ),
-              React.createElement(
-                "td",
-                { className: "col-sm-2" },
-                React.createElement(
-                  "p",
-                  null,
-                  " ",
-                  this.state.startTime
-                )
-              ),
-              React.createElement(
-                "td",
-                { className: "col-sm-2" },
-                React.createElement(
-                  "p",
-                  null,
-                  this.state.stopTime
-                )
-              )
-            )
-          )
+          React.createElement("tbody", null)
         )
       )
     );

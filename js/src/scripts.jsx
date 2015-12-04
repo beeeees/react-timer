@@ -5,10 +5,12 @@ var Timer = React.createClass({
         newProjectName: "Task 1",
         buttonText: "Start",
         on: false,
+        startTimeDisplay: "",
         startTime: "",
         stopTime: "",
         emptyTimer: "00:00:00",
-        timeSpent: ""
+        timeSpent: "",
+        taskNumber: 1,
       }
   },
 
@@ -34,18 +36,44 @@ var Timer = React.createClass({
   },
 
   startTimer: function(){
-
+    var self = this;
+    self.resetTimer();
+    var startTimeHMS = "00:00:00";
     var currentdate = new Date();
+    var minutes = currentdate.getMinutes();
+    var hours = currentdate.getHours();
+    if ( hours > 12 ) {
+      var hours = hours - 12;
+    }
+    if (minutes < 10 ) {
+      var minutes = "0" + minutes;
+    }
+    var startTimeDisplayed = hours + ":" + minutes + " PM";
+
     var startTimeHMS = currentdate.getHours() + ":"
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
 
+    this.setState({ startTimeDisplay: startTimeDisplayed });
     this.setState({ startTime: startTimeHMS });
+
+    $("tbody").append("<tr><td className='col-sm-4'><p>" + self.state.newProjectName + "</p></td><td className='col-sm-4'></td><td className='col-sm-2'><p>" + startTimeDisplayed + "</p></td><td className='col-sm-2'><p></p></td></tr>");
 
   },
 
   stopTimer: function(){
+    var self = this;
     var currentdate = new Date();
+    var minutes = currentdate.getMinutes();
+    var hours = currentdate.getHours();
+    if ( hours > 12 ) {
+      var hours = hours - 12;
+    }
+    if (minutes < 10 ) {
+      var minutes = "0" + minutes;
+    }
+    var stopTimeDisplayed = hours + ":" + minutes + " PM";
+
     var stopTimeHMS = currentdate.getHours() + ":"
                     + currentdate.getMinutes() + ":"
                     + currentdate.getSeconds();
@@ -74,11 +102,15 @@ var Timer = React.createClass({
     var minutes = (minutes < 10) ? "0" + minutes : minutes;
     var seconds = (seconds < 10) ? "0" + seconds : seconds;
 
+
     var timeDifference =  (hours + ":" + minutes + ":" + seconds);
 
     this.setState({ stopTime: stopTimeHMS });
     this.setState({ emptyTimer: timeDifference });
     this.setState({ timeSpent: timeDifference });
+
+     $("tbody tr").last().html("<td className='col-sm-4'><p>" + self.state.newProjectName + "</p></td><td className='col-sm-4'>" + timeDifference + "</td><td className='col-sm-2'><p>" + self.state.startTimeDisplay + "</p></td><td className='col-sm-2'><p>" + stopTimeDisplayed + "</p></td>");
+
   },
 
 
@@ -111,9 +143,7 @@ var Timer = React.createClass({
              {this.state.emptyTimer}
           </p>
           <div className="buttons col-sm-4">
-
             {startButton}
-            {resetButton}
           </div>
         </div>
         <div className="row">
@@ -135,20 +165,6 @@ var Timer = React.createClass({
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="col-sm-4">
-                  <p>{this.state.newProjectName}</p>
-                </td>
-                <td className="col-sm-4">
-                {this.state.timeSpent}
-                </td>
-                <td className="col-sm-2">
-                  <p> {this.state.startTime}</p>
-                </td>
-                <td className="col-sm-2">
-                  <p>{this.state.stopTime}</p>
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>
