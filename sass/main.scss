@@ -1,0 +1,57 @@
+// Override Bootstrap variables here:
+@import "variables";
+@import "../bootstrap/assets/stylesheets/bootstrap";
+
+
+// Fontello (optional)
+@import "../fonts/fontello/css/fontello.css";
+
+
+/* ==========================================================================
+   Media Query Shortcutes
+   ========================================================================== */
+
+@mixin xs-max {
+  @media (max-width: #{$screen-xs-max}) {
+    @content;
+  }
+}
+
+@mixin xs {
+  @media (min-width: #{$screen-xs-min}) {
+    @content;
+  }
+}
+
+@mixin small {
+  @media (min-width: #{$screen-sm-min}) {
+    @content;
+  }
+}
+
+@mixin sm-max {
+  @media (max-width: #{$screen-sm-max}) {
+    @content;
+  }
+}
+
+@mixin medium {
+  @media (min-width: #{$screen-md-min}) {
+    @content;
+  }
+}
+
+@mixin large {
+  @media (min-width: #{$screen-lg-min}) {
+    @content;
+  }
+}
+
+
+
+/* ==========================================================================
+  Custom styles
+   ========================================================================== */
+
+// Page specific files, and or groups of styles:
+@import "partials/home.scss";

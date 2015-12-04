@@ -1,0 +1,6 @@
+RewriteEngine on
+RewriteRule ^(.*)\.json$ $1.php
+
+<IfModule mod_headers.c>
+   Header add Access-Control-Allow-Origin: *
+</IfModule>
